@@ -1,0 +1,108 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+.env
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+android/.gradle/
+assets/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.dart_tool/
+# 💻 IDEs & Editors
+
+.idea/
+.vscode/
+
+# 🔐 Environment & secrets
+src/.env
+.env
+
+
+
+# 📱 Android specific
+# --- Android ---
+/android/**/generated/
+/android/**/intermediates/
+/android/**/outputs/
+/*.jks
+/*.keystore
+android/app/*.jks
+android/app/*.keystore
+android/app/release/
+android/app/debug/
+android/app/google-services.json
+# google-services.json # (إذا كنت تريد حمايتها بالكامل كما فعلت سابقاً)
+
+# --- iOS ---
+# 🍏 iOS specific
+ios/Pods/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+ios/Flutter/App.framework.podspec
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Runner/App.framework
+ios/Runner/App.framework.podspec
+ios/Runner/Base.lproj/LaunchScreen.storyboard
+ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json
+ios/Runner/GoogleService-Info.plist
+
+
+
+
+
+# 🧪 Test & coverage
+test/
+
+
+
+# Firebase config files
+
+
+lib/firebase_options.dart
+.firebaserc
+firebase.json

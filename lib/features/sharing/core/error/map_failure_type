@@ -1,0 +1,5 @@
+  ShareFailureType mapFailureType(Object error) {
+    if (error is SocketException) return ShareFailureType.network;
+    if (error is FirebaseException) return ShareFailureType.firestore;
+    return ShareFailureType.unknown;
+  }
