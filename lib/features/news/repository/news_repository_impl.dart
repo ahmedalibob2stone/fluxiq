@@ -154,9 +154,9 @@ class NewsRepositoryImpl extends NewsRepository {
     isBreaking: isBreaking,
   );
 
-  @override
-  Future<List<NewsModel>> fetchBreakingNews({int limit = 6}) =>
-      _firebase.fetchBreakingNews(limit: limit);
+    @override
+    Future<List<NewsModel>> fetchBreakingNews({int limit = 6}) =>
+        _firebase.fetchBreakingNews(limit: limit);
 
   @override
   Future<List<NewsModel>> searchNews({

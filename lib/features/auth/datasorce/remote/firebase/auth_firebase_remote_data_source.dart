@@ -19,6 +19,8 @@ abstract class AuthFirebaseRemoteDataSource {
   Future<UserModel?> checkAuthStatus();
 
   Future<GoogleSignInResult> signInWithGoogle();
+  String? getCurrentUserId();
+
 }
 
 

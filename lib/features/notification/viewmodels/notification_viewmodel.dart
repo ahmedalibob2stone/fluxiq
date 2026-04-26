@@ -1,4 +1,3 @@
-// lib/features/notification/presentation/vm/notification_vm.dart
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/notification_model.dart';
 import '../repository/notification_repository.dart';
 import '../state/notification_state.dart';
+
+import '../../../../core/error/app_exception.dart';
 
 class NotificationViewModel extends StateNotifier<NotificationState> {
   final NotificationRepository _repository;
@@ -23,50 +24,52 @@ class NotificationViewModel extends StateNotifier<NotificationState> {
     _startListening();
   }
 
-  // ── Private ────────────────────────────────────────────────────────────────
-
   void _startListening() {
-    // مجرى الإشعارات
     _notificationsSub = _repository
         .watchNotifications(_userId)
         .listen(
           (notifications) => state = state.copyWith(
         notifications: notifications,
-        errorMessage: null,
+        errorMessage:  null,
       ),
-      onError: (e) => state = state.copyWith(
-        errorMessage: 'فشل تحميل الإشعارات',
-      ),
+      onError: (Object e) {
+        final message = e is AppException
+            ? e.message
+            : 'Unable to load notifications. Please try again.';
+
+        state = state.copyWith(errorMessage: message);
+      },
     );
 
-    // مجرى عدد الإشعارات غير المقروءة
     _unreadCountSub = _repository
         .watchUnreadCount(_userId)
         .listen(
           (count) => state = state.copyWith(unreadCount: count),
-      onError: (_) {},
+      onError: (_) {
+      },
     );
   }
 
-  // ── Public ─────────────────────────────────────────────────────────────────
-
-  /// تحديد إشعار واحد كمقروء
   Future<void> markAsRead(String notificationId) async {
     try {
       await _repository.markAsRead(notificationId);
     } catch (_) {
-      // نفشل بصمت — الـ UI لن يتأثر
     }
   }
 
-  /// تحديد جميع الإشعارات كمقروءة
   Future<void> markAllAsRead() async {
     if (state.isMarkingAllRead) return;
-    state = state.copyWith(isMarkingAllRead: true);
+
+    state = state.copyWith(isMarkingAllRead: true, errorMessage: null);
+
     try {
       await _repository.markAllAsRead(_userId);
     } catch (e) {
-      state = state.copyWith(errorMessage: 'فشل تحديد الكل كمقروء');
+      final message = e is AppException
+          ? e.message
+          : 'Unable to mark all as read. Please try again.';
+
+      state = state.copyWith(errorMessage: message);
     } finally {
       state = state.copyWith(isMarkingAllRead: false);
     }

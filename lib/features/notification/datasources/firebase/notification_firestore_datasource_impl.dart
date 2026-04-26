@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../model/notification_model.dart';
 import 'notification_firestore_datasource.dart';
@@ -13,6 +12,10 @@ class NotificationFirestoreDataSourceImpl
 
   @override
   Stream<List<NotificationModel>> watchNotifications(String userId) {
+    if (userId.trim().isEmpty) {
+      return const Stream.empty();
+    }
+
     return _firestore
         .collection(_collection)
         .where('recipientUserId', isEqualTo: userId)
@@ -28,6 +31,10 @@ class NotificationFirestoreDataSourceImpl
 
   @override
   Stream<int> watchUnreadCount(String userId) {
+    if (userId.trim().isEmpty) {
+      return Stream.value(0);
+    }
+
     return _firestore
         .collection(_collection)
         .where('recipientUserId', isEqualTo: userId)
@@ -36,16 +43,22 @@ class NotificationFirestoreDataSourceImpl
         .map((snap) => snap.size);
   }
 
+
   @override
   Future<void> markAsRead(String notificationId) async {
+    if (notificationId.trim().isEmpty) return;
+
     await _firestore
         .collection(_collection)
         .doc(notificationId)
         .update({'isRead': true});
   }
 
+
   @override
   Future<void> markAllAsRead(String userId) async {
+    if (userId.trim().isEmpty) return;
+
     final batch = _firestore.batch();
 
     final snap = await _firestore
@@ -53,6 +66,8 @@ class NotificationFirestoreDataSourceImpl
         .where('recipientUserId', isEqualTo: userId)
         .where('isRead', isEqualTo: false)
         .get();
+
+    if (snap.docs.isEmpty) return;
 
     for (final doc in snap.docs) {
       batch.update(doc.reference, {'isRead': true});

@@ -8,6 +8,7 @@ import '../../../../../core/error/app_exception.dart';
 import '../../../../../core/error/auth_error_handler.dart';
 import '../../../model/user_model.dart';
 import 'auth_firebase_remote_data_source.dart';
+import 'dart:async' as dart_async;
 
 
   class AuthFirebaseRemoteDataSourceImpl implements AuthFirebaseRemoteDataSource {
@@ -24,6 +25,10 @@ import 'auth_firebase_remote_data_source.dart';
           _googleSignIn = googleSignIn;
 
 
+    @override
+    String? getCurrentUserId() {
+      return _auth.currentUser?.uid;
+    }
     @override
     Future<UserModel?> signInWithEmail(String email, String password) async {
       try {
@@ -45,7 +50,7 @@ import 'auth_firebase_remote_data_source.dart';
     }
 
     @override
-    Future<RegisterResult> registerWithEmail(
+      Future<RegisterResult> registerWithEmail(
         String name,
         String email,
         String password,
@@ -80,16 +85,21 @@ import 'auth_firebase_remote_data_source.dart';
     @override
     Future<void> signOut() async {
       try {
+
+
         await Future.wait([
           _auth.signOut(),
           _googleSignIn.signOut(),
-        ]);
+        ]).timeout(const Duration(seconds: 3));
+
+      } on dart_async.TimeoutException {
+        throw const NetworkException();
+      } on FirebaseAuthException catch (e) {
+        throw AuthErrorHandler.handle(e);
       } catch (e) {
         throw AuthErrorHandler.handle(e);
       }
     }
-
-
     @override
     Future<UserModel?> getCurrentUser() async {
       try {

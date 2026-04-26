@@ -1,15 +1,30 @@
 'use strict';
 
-const fcmService = require('./fcmService');
-const userRepository = require('../repositories/userRepository');
+const fcmService        = require('./fcmService');
+const userRepository    = require('../repositories/userRepository');
 const notificationRepository = require('../repositories/notificationRepository');
 const { checkMilestone } = require('../utils/milestoneChecker');
 const logger = require('../utils/logger');
 
 function truncate(text, maxLength) {
   if (!text) return '';
-  if (text.length <= maxLength) return text;
-  return `${text.substring(0, maxLength)}...`;
+  return text.length <= maxLength
+    ? text
+    : `${text.substring(0, maxLength)}...`;
+}
+
+
+function buildLikeNotificationText(currentLikesCount) {
+  if (currentLikesCount === 1) {
+    return {
+      title: '❤️ New Like',
+      body:  'Someone liked your news article',
+    };
+  }
+  return {
+    title: '❤️ New Like',
+    body:  'Someone else liked your news article',
+  };
 }
 
 async function processLikeNotification({
@@ -19,19 +34,16 @@ async function processLikeNotification({
   authorId,
   senderId,
   senderUsername,
-  senderProfileImage,
   currentLikesCount,
 }) {
-  let fcmSent = false;
-  let fcmMessageId = null;
-  let inAppSaved = false;
-  let isMilestone = false;
+  let fcmSent       = false;
+  let fcmMessageId  = null;
+  let inAppSaved    = false;
+  let isMilestone   = false;
   let milestoneCount = null;
 
   if (authorId === senderId) {
-    logger.info('processLikeNotification: author liked own article, skip', {
-      authorId,
-    });
+    logger.info('processLikeNotification: self-like, skip', { authorId });
     return {
       success: true,
       fcmSent: false,
@@ -45,10 +57,9 @@ async function processLikeNotification({
 
   try {
     await notificationRepository.saveLikeNotification({
-      recipientUserId: authorId,
-      senderUserId: senderId,
+      recipientUserId:    authorId,
+      senderUserId:       senderId,
       senderUsername,
-      senderProfileImage,
       newsId,
       newsTitle,
       newsImageUrl,
@@ -65,31 +76,28 @@ async function processLikeNotification({
     logger.error('processLikeNotification: failed to get FCM token', error);
   }
 
-  // ── STEP 3: Send FCM push notification ────────────────────────────────────
   if (authorFcmToken) {
-    const notifTitle = '❤️ إعجاب جديد';
-    const notifBody = `${senderUsername} أعجب بخبرك: ${truncate(newsTitle, 50)}`;
+    const { title, body } = buildLikeNotificationText(currentLikesCount);
 
     const fcmResult = await fcmService.sendToDevice({
-      token: authorFcmToken,
-      title: notifTitle,
-      body: notifBody,
-      imageUrl: newsImageUrl,
+      token:authorFcmToken,
+      title,
+      body,
+      imageUrl:  newsImageUrl || '',
       channelId: 'likes_channel',
-      priority: 'normal',
+      priority:  'normal',
       data: {
-        type: 'like',
+        type:   'like',
         newsId,
+            newsImageUrl: newsImageUrl || '',
       },
     });
 
     if (fcmResult.success) {
-      fcmSent = true;
+      fcmSent      = true;
       fcmMessageId = fcmResult.messageId;
     } else if (fcmResult.invalidToken) {
-      logger.warn('processLikeNotification: invalid FCM token, removing', {
-        authorId,
-      });
+      logger.warn('processLikeNotification: invalid token, removing', { authorId });
       try {
         await userRepository.removeUserFcmToken(authorId);
       } catch (removeError) {
@@ -97,39 +105,36 @@ async function processLikeNotification({
       }
     }
   } else {
-    logger.warn('processLikeNotification: author has no FCM token, skip push', {
-      authorId,
-    });
+    logger.warn('processLikeNotification: no FCM token for author', { authorId });
   }
 
   const milestone = checkMilestone(currentLikesCount);
 
   if (milestone !== null && authorFcmToken) {
-    isMilestone = true;
+    isMilestone    = true;
     milestoneCount = milestone;
 
-    const milestoneTitle = '🎉 إنجاز جديد!';
-    const milestoneBody = `وصل خبرك '${truncate(newsTitle, 40)}' إلى ${milestone} إعجاب!`;
+    const milestoneTitle = '🎉 Achievement Unlocked!';
+    const milestoneBody  =
+      `Your article "${truncate(newsTitle, 40)}" reached ${milestone} likes!`;
 
     const milestoneResult = await fcmService.sendToDevice({
-      token: authorFcmToken,
-      title: milestoneTitle,
-      body: milestoneBody,
-      imageUrl: newsImageUrl,
-      channelId: 'likes_channel',
-      priority: 'normal',
+      token:     authorFcmToken,
+      title:     milestoneTitle,
+      body:      milestoneBody,
+      imageUrl:  newsImageUrl || '',
+      channelId: 'milestones_channel',
+      priority:  'high',
       data: {
-        type: 'milestone',
+        type:'milestone',
         newsId,
+           newsImageUrl: newsImageUrl || '',
         milestoneCount: String(milestone),
       },
     });
 
     if (milestoneResult.success) {
-      logger.info('processLikeNotification: milestone notification sent', {
-        milestone,
-        newsId,
-      });
+      logger.info('processLikeNotification: milestone sent', { milestone, newsId });
     }
   }
 
@@ -144,6 +149,4 @@ async function processLikeNotification({
   };
 }
 
-module.exports = {
-  processLikeNotification,
-};
+module.exports = { processLikeNotification };

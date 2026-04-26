@@ -8,7 +8,7 @@ import '../repository/notification_repository_provider.dart';
 
 final notificationVmProvider =
 StateNotifierProvider<NotificationViewModel, NotificationState>((ref) {
-  final userId = ref.watch(currentUserIdProvider);           // مزودك الحالي
+  final userId = ref.watch(currentUserIdProvider);
   final repository = ref.watch(notificationRepositoryProvider);
 
   return NotificationViewModel(

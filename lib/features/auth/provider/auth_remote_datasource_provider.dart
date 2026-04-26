@@ -11,13 +11,13 @@ import '../datasorce/remote/resend/auth_resend_remote_data_source.dart';
 import '../datasorce/remote/resend/auth_resend_remote_data_source_impl.dart';
 
 
-final authFirebaseRemoteDataSourceProvider = Provider<AuthFirebaseRemoteDataSource>((ref) {
-  return AuthFirebaseRemoteDataSourceImpl(
-    auth: ref.read(firebaseAuthProvider),
-    db: ref.read(firebaseFirestoreProvider),
-    googleSignIn: ref.read(googleSignInProvider),
-  );
-});
+  final authFirebaseRemoteDataSourceProvider = Provider<AuthFirebaseRemoteDataSource>((ref) {
+    return AuthFirebaseRemoteDataSourceImpl(
+      auth: ref.read(firebaseAuthProvider),
+      db: ref.read(firebaseFirestoreProvider),
+      googleSignIn: ref.read(googleSignInProvider),
+    );
+  });
 
 
 final authResendRemoteDataSourceProvider = Provider<AuthResendRemoteDataSource>((ref) {

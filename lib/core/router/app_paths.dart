@@ -17,4 +17,9 @@ class AppPaths {
   //  User
   static const String liked          = '/liked';
   static const String favorites      = '/favorites';
+
+  //  Notifications
+  static const String notifications = '/notifications';
+  // في app_paths.dart — أضف فقط هذا السطر
+  static const String notificationNewsDetails = '/notification/news/:newsId';
 }

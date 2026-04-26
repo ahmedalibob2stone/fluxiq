@@ -15,6 +15,3 @@ final shareSyncProvider = StreamProvider<void>((ref) {
   });
 });
 
-final currentUserIdProvider = Provider<String>((ref) {
-  throw UnimplementedError('Override currentUserIdProvider');
-});

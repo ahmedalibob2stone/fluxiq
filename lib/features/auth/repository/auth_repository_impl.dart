@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/services/interfaces/i_fcm_token_service.dart';
 import '../datasorce/remote/firebase/auth_firebase_remote_data_source.dart';
 import '../datasorce/remote/resend/auth_resend_remote_data_source.dart';
 import '../model/user_model.dart';
@@ -10,18 +11,27 @@ import 'auth_repository.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthFirebaseRemoteDataSource _firebaseDataSource;
   final AuthResendRemoteDataSource _remoteDataSource;
+  final IFcmTokenService _fcmTokenService;
 
   AuthRepositoryImpl({
     required AuthFirebaseRemoteDataSource firebaseDataSource,
     required AuthResendRemoteDataSource remoteDataSource,
+    required IFcmTokenService fcmTokenService, // ← جديد
   })  : _firebaseDataSource = firebaseDataSource,
-        _remoteDataSource = remoteDataSource;
+        _remoteDataSource   = remoteDataSource,
+        _fcmTokenService    = fcmTokenService;
+
+
 
 
   @override
-  Future<UserModel?> signInWithEmail(String email, String password) =>
-      _firebaseDataSource.signInWithEmail(email, password);
-
+  Future<UserModel?> signInWithEmail(String email, String password) async {
+    final user = await _firebaseDataSource.signInWithEmail(email, password);
+    if (user != null) {
+      await _fcmTokenService.saveToken(user.uid);
+    }
+    return user;
+  }
 
   @override
   Future<UserModel?> registerWithEmail(
@@ -39,6 +49,10 @@ class AuthRepositoryImpl implements AuthRepository {
       );
     }
 
+    if (result.user != null) {
+      await _fcmTokenService.saveToken(result.user!.uid);
+    }
+
     return result.user;
   }
 
@@ -47,10 +61,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> resetPassword(String email) =>
       _remoteDataSource.requestPasswordReset(email: email);
 
-
   @override
-  Future<void> signOut() => _firebaseDataSource.signOut();
-
+  Future<void> signOut() async {
+    final uid = _firebaseDataSource.getCurrentUserId();
+    await _fcmTokenService.clearTokenAndUnsubscribe(uid);
+    await _firebaseDataSource.signOut();
+  }
 
   @override
   Future<UserModel?> getCurrentUser() => _firebaseDataSource.getCurrentUser();
@@ -70,6 +86,9 @@ class AuthRepositoryImpl implements AuthRepository {
         name: result.user!.name,
         idToken: result.idToken!,
       );
+    }
+    if (result.user != null) {
+      await _fcmTokenService.saveToken(result.user!.uid);
     }
 
     return result.user;

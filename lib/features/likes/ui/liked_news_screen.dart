@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../news/ui/widgets/news_card.dart';
 import '../provider/user_likes_viewmodel_provider.dart';
-
 
 class LikedNewsScreen extends ConsumerWidget {
   const LikedNewsScreen({Key? key}) : super(key: key);
@@ -14,7 +15,23 @@ class LikedNewsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Liked News"),
+        leading: context.canPop() // ✅ GoRouter canPop
+            ? IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => context.pop(),
+        )
+            : null,
+        title: const Text(
+          'Liked News',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -25,94 +42,97 @@ class LikedNewsScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: () {
-        if (state.isLoading && !viewModel.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: SafeArea(
+        child: _buildBody(context, state, viewModel),
+      ),
+    );
+  }
 
-        if (state.error != null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                const SizedBox(height: 16),
-                Text(state.error!, textAlign: TextAlign.center),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => viewModel.refreshUserLikesHistory(),
-                  child: const Text("Retry"),
+  Widget _buildBody(BuildContext context, dynamic state, dynamic viewModel) {
+    if (state.isLoading && !viewModel.hasData) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(state.error!, textAlign: TextAlign.center),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => viewModel.refreshUserLikesHistory(),
+              child: const Text("Retry"),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!viewModel.hasData) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (viewModel.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.favorite_border, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              "No liked news yet.",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final items = state.likedNewsItems;
+
+    return RefreshIndicator(
+      onRefresh: () => viewModel.refreshUserLikesHistory(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600;
+
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isWideScreen ? constraints.maxWidth * 0.04 : 8.0,
+              vertical: 8.0,
+            ),
+            child: isWideScreen
+                ? GridView.builder(
+              gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 3 / 2,
+              ),
+              itemCount: items.length,
+              itemBuilder: (context, index) => NewsCard(
+                news: items[index].news,
+                isMyPost: false,
+              ),
+            )
+                : ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: items.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: NewsCard(
+                  news: items[index].news,
+                  isMyPost: false,
                 ),
-              ],
+              ),
             ),
           );
-        }
-
-        if (!viewModel.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (viewModel.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  "No liked news yet.",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ],
-            ),
-          );
-        }
-
-        final items = state.likedNewsItems;
-
-        return RefreshIndicator(
-          onRefresh: () => viewModel.refreshUserLikesHistory(),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final isWideScreen = constraints.maxWidth > 600;
-
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: isWideScreen
-                    ? GridView.builder(
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 3 / 2,
-                  ),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) => NewsCard(
-                    news: items[index].news,
-                    isMyPost: false,
-                  ),
-                )
-                    : ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) =>
-
-                      Padding(
-
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: NewsCard(
-                      news: items[index].news,
-                      isMyPost: false,
-                    ),
-
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      }(),
+        },
+      ),
     );
   }
 }

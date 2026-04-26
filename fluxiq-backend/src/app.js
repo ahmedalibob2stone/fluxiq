@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -8,6 +6,7 @@ const ApiResponse = require('./utils/response.helper');
 
 const app = express();
 
+app.set('trust proxy', 1);
 
 app.use(helmet());
 
@@ -25,7 +24,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-
 app.get('/api/v1/health', (req, res) => {
   ApiResponse.success(res, {
     message: 'Server is running',
@@ -37,13 +35,12 @@ app.get('/api/v1/health', (req, res) => {
   });
 });
 
-const emailRoutes = require('./routes/email.routes');
-app.use('/api/v1/email', emailRoutes);
-
-const authRoutes = require('./routes/auth.routes');
-app.use('/api/v1/auth', authRoutes);
-
+const emailRoutes        = require('./routes/email.routes');
+const authRoutes         = require('./routes/auth.routes');
 const notificationRoutes = require('./routes/notification.routes');
+
+app.use('/api/v1/email',emailRoutes);
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 
 app.use((req, res) => {
@@ -54,7 +51,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error(' Unhandled Error:', err);
+  console.error('Unhandled Error:', err);
   ApiResponse.error(res, {
     message: 'Internal server error',
     statusCode: 500,

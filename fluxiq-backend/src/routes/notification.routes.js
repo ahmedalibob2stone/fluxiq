@@ -46,10 +46,6 @@ const likeNotificationSchema = z.object({
     .string({ required_error: 'senderUsername is required' })
     .min(1, 'senderUsername cannot be empty'),
 
-  senderProfileImage: z
-    .string()
-    .optional()
-    .or(z.literal('')),
 
   currentLikesCount: z
     .number({ required_error: 'currentLikesCount is required' })

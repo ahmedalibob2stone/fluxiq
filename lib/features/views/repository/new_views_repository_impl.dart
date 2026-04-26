@@ -1,4 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+  import 'package:connectivity_plus/connectivity_plus.dart';
 import '../datasource/local/views_local_datasource.dart';
 import '../datasource/remote/location_remote_datasource.dart';
 import '../datasource/remote/views_remote_datasource.dart';

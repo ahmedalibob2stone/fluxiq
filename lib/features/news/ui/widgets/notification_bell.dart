@@ -1,9 +1,9 @@
-// lib/core/widgets/notification_bell.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_route_names.dart.dart';
 import '../../../notification/providers/vm/notification_vm_provider.dart';
 
 
@@ -25,7 +25,7 @@ class NotificationBell extends ConsumerWidget {
             Icons.notifications_outlined,
             color: Colors.white,
           ),
-          onPressed: () => context.push('/notifications'),
+          onPressed: () => context.pushNamed(AppRouteNames.notifications),
         ),
         if (unreadCount > 0)
           Positioned(

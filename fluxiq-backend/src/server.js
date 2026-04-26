@@ -1,7 +1,6 @@
 require('dotenv').config();
 const app = require('./app');
 
-// استيراد Breaking News Watcher
 const { startBreakingNewsWatcher } = require('./services/breakingNewsService');
 
 const PORT = process.env.PORT || 3000;

@@ -14,7 +14,6 @@ async function saveLikeNotification({
   recipientUserId,
   senderUserId,
   senderUsername,
-  senderProfileImage,
   newsId,
   newsTitle,
   newsImageUrl,
@@ -28,7 +27,6 @@ async function saveLikeNotification({
       recipientUserId,
       senderUserId,
       senderUsername,
-      senderProfileImage: senderProfileImage || '',
       type: 'like',
       newsId,
       newsTitle,
@@ -47,7 +45,7 @@ async function saveLikeNotification({
 
 
 async function saveBreakingNewsNotificationsForAllUsers({
-  allUserIds,
+  allUsers,
   newsId,
   newsTitle,
   newsImageUrl,
@@ -57,20 +55,19 @@ async function saveBreakingNewsNotificationsForAllUsers({
     const BATCH_LIMIT = 500;
     const batches = [];
 
-    for (let i = 0; i < allUserIds.length; i += BATCH_LIMIT) {
-      const chunk = allUserIds.slice(i, i + BATCH_LIMIT);
+    for (let i = 0; i < allUsers.length; i += BATCH_LIMIT) {
+      const chunk = allUsers.slice(i, i + BATCH_LIMIT);
       const batch = db.batch();
 
-      for (const uid of chunk) {
+      for (const user of chunk) {
         const notifId = generateNotificationId();
         const docRef = db.collection(NOTIFICATIONS_COLLECTION).doc(notifId);
 
         batch.set(docRef, {
           id: notifId,
-          recipientUserId: uid,
+          recipientUserId: user.id,
           senderUserId: senderUserId || '',
           senderUsername: 'FluxIQ',
-          senderProfileImage: '',
           type: 'breaking_news',
           newsId,
           newsTitle,
@@ -86,7 +83,7 @@ async function saveBreakingNewsNotificationsForAllUsers({
     await Promise.all(batches);
 
     logger.info('saveBreakingNewsNotificationsForAllUsers: done', {
-      total: allUserIds.length,
+       total: allUsers.length,
       newsId,
     });
   } catch (error) {
@@ -101,6 +98,8 @@ async function saveBreakingNewsLog({
   newsTitle,
   recipientsCount,
   status,
+  senderUserId,
+    allUsers,
 }) {
   try {
     const docRef = db.collection(BREAKING_NEWS_LOG_COLLECTION).doc(newsId);
@@ -111,11 +110,44 @@ async function saveBreakingNewsLog({
       sentAt: new Date(),
       recipientsCount,
       status,
+       senderUserId: senderUserId || '',
     });
 
     logger.info('saveBreakingNewsLog: log saved', { newsId, status });
+        if (allUsers && allUsers.length > 0) {
+          const BATCH_LIMIT = 500;
+          const batches = [];
+
+          for (let i = 0; i < allUsers.length; i += BATCH_LIMIT) {
+            const chunk = allUsers.slice(i, i + BATCH_LIMIT);
+            const batch = db.batch();
+
+            for (const user of chunk) {
+              const recipientRef = docRef
+                .collection('recipients')
+                .doc(user.id);
+
+              batch.set(recipientRef, {
+                userId: user.id,
+                userName: user.username || user.displayName || 'Unknown',
+                receivedAt: new Date(),
+                status: status === 'sent' ? 'delivered' : 'failed',
+              });
+            }
+
+            batches.push(batch.commit());
+          }
+
+          await Promise.all(batches);
+
+          logger.info('saveBreakingNewsLog: recipients subcollection saved', {
+            newsId,
+            count: allUsers.length,
+          });
+        }
   } catch (error) {
     logger.error('saveBreakingNewsLog: failed to save log', error);
+    throw error;
   }
 }
 

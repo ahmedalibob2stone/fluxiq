@@ -14,7 +14,6 @@ async function sendLikeNotification(req, res, next) {
       authorId,
       senderId,
       senderUsername,
-      senderProfileImage,
       currentLikesCount,
     } = req.body;
 
@@ -31,7 +30,6 @@ async function sendLikeNotification(req, res, next) {
       authorId,
       senderId,
       senderUsername,
-      senderProfileImage,
       currentLikesCount,
     });
 

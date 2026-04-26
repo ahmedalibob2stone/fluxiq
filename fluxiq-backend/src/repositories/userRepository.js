@@ -95,11 +95,26 @@ async function getAllUserIds() {
     throw error;
   }
 }
+async function getAllUsers() {
+  try {
+    const snapshot = await db.collection(USERS_COLLECTION).get();
 
+    if (snapshot.empty) return [];
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    logger.error('getAllUsers: failed to fetch users', error);
+    throw error;
+  }
+}
 module.exports = {
   getUserById,
   getUserFcmToken,
   removeUserFcmToken,
   getAllUsersWithFcmToken,
   getAllUserIds,
+   getAllUsers,
 };

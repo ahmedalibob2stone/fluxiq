@@ -17,4 +17,9 @@ class AppRouteNames {
   //  User
   static const String liked          = 'liked';
   static const String favorites      = 'favorites';
+
+  //  Notifications
+  static const String notifications = 'notifications';
+  static const String notificationNewsDetails = 'notificationNewsDetails';
+
 }

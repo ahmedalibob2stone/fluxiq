@@ -3,10 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'app_exception.dart';
 import 'firestore_error_handler.dart';
 
+import 'dart:async' as dart_async;
 class AuthErrorHandler {
 
   static AppException handle(Object error) {
     if (error is AppException) return error;
+    if (error is dart_async.TimeoutException) {
+      return const NetworkException(
+        'Please check your internet connection.',
+      );
+    }
     if (error is FirebaseAuthException) {
       return _handleAuthError(error);
     }

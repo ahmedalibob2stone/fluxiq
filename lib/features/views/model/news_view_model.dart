@@ -9,7 +9,7 @@ class NewsViewModelModel with _$NewsViewModelModel {
     required DateTime viewedAt,
     String? ip,
     String? country,
-    String? city,
+      String? city,
   }) = _NewsViewModelModel;
 
   factory NewsViewModelModel.fromJson(Map<String, dynamic> json) =>

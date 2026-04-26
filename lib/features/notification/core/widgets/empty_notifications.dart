@@ -1,4 +1,3 @@
-// lib/core/widgets/empty_notifications.dart
 
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class EmptyNotifications extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            'لا توجد إشعارات',
+            'No Notifications',
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
         ],

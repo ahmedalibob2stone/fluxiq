@@ -29,7 +29,7 @@ class FavoriteModel with _$FavoriteModel {
     required String title,
     required String imageUrl,
     required String category,
-    required String userId,
+      required String userId,
     @TimestampConverter() required DateTime createdAt,
   }) = _FavoriteModel;
 

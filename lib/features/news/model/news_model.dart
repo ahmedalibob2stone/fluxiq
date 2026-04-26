@@ -10,7 +10,7 @@ class NewsModel with _$NewsModel {
     required String title,
     required String imageUrl,
     required String category,
-    required String des,
+      required String des,
     required DateTime createdAt,
     required bool isBreaking,
     required String? userId,

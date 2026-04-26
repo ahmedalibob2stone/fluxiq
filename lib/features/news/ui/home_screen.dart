@@ -17,7 +17,7 @@ import 'widgets/news_category_list.dart';
 import 'widgets/breaking_news_slider.dart';
 import 'widgets/news_card.dart';
 
-class NewsHomeScreen extends ConsumerStatefulWidget {
+  class NewsHomeScreen extends ConsumerStatefulWidget {
   const NewsHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -122,6 +122,17 @@ class _NewsHomeScreenState extends ConsumerState<NewsHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authViewModelProvider, (previous, next) {
+
+      if (next.error != null && next.error!.isNotEmpty) {
+        FluxIQSnackBar.showError(context, next.error!);
+      }
+
+      if (next.status == AuthStatus.unauthenticated &&
+          previous?.status != AuthStatus.unauthenticated) {
+        context.goNamed(AppRouteNames.login);
+      }
+    });
     ref.listen<NewsState>(newsViewModelProvider, (previous, next) {
       if (next.error != null && next.error!.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -140,17 +151,7 @@ class _NewsHomeScreenState extends ConsumerState<NewsHomeScreen> {
         );
       }
     });
-    ref.listen(authViewModelProvider, (previous, next) {
 
-      if (next.error != null && next.error!.isNotEmpty) {
-        FluxIQSnackBar.showError(context, next.error!);
-      }
-
-      if (next.status == AuthStatus.unauthenticated &&
-          previous?.status != AuthStatus.unauthenticated) {
-        context.goNamed(AppRouteNames.login);
-      }
-    });
 
 
     ref.listen<PublishNewsState>(publishingNewsProvider, (previous, next) {
@@ -212,7 +213,7 @@ class _NewsHomeScreenState extends ConsumerState<NewsHomeScreen> {
                     title: const Text("Favorites"),
                     onTap: () {
                       context.pop();
-                      context.goNamed(AppRouteNames.favorites);
+                      context.pushNamed(AppRouteNames.favorites);
                     },
                   ),
 
@@ -222,7 +223,7 @@ class _NewsHomeScreenState extends ConsumerState<NewsHomeScreen> {
                     title: const Text("Likes"),
                     onTap: () {
                       context.pop();
-                      context.goNamed(AppRouteNames.liked);
+                      context.pushNamed(AppRouteNames.liked);
                     },
                   ),
 

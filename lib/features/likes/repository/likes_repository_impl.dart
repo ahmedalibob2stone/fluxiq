@@ -16,7 +16,7 @@ class LikesRepositoryImpl implements LikesRepository {
     required LikeModel like,
     required bool isCurrentlyLiked,
   }) async {
-    final newsRef = _firestore.collection('news').doc(newsId);
+    final   newsRef = _firestore.collection('news').doc(newsId);
     final likeRef = newsRef.collection('likes').doc(userId);
     final userLikeRef = _firestore
         .collection('users')

@@ -29,6 +29,9 @@
     		<string>fetch</string>
     		<string>remote-notification</string>
     	</array>
+    	<!-- صوت مخصص -->
+        <key>UNNotificationDefaultSoundName</key>
+        <string>breaking_news_sound.wav</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
