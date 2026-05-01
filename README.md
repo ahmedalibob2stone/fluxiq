@@ -4,8 +4,13 @@
 # FluxIQ
 
 ## Overview
-FluxIQ is a comprehensive news application that combines API-sourced content with user-generated News, creating a hybrid news ecosystem.. The app provides a seamless and dynamic news experience, merging global news from external APIs with user-generated content into a single, cohesive platform.
-The application is architected following the MVVM (Model-View-ViewModel) design pattern and utilizes Riverpod for robust state management. This ensures a clean, maintainable, and scalable codebase. The backend is powered by Firebase (Authentication, Firestore, FCM) with integrated REST APIs for specific services.
+FluxIQ is a comprehensive news application that combines API-sourced content with user-generated News,
+creating a hybrid news ecosystem.. The app provides a seamless and dynamic news experience, 
+merging global news from external APIs with user-generated content into a single, cohesive platform.
+The application is architected following the MVVM (Model-View-ViewModel) design pattern and 
+utilizes Riverpod for robust state management. This ensures a clean, 
+maintainable, and scalable codebase. The backend is powered 
+by Firebase (Authentication, Firestore, FCM) with integrated REST APIs for specific services.
 
 ## Key Features
 - OnBoarding Screens
@@ -35,7 +40,7 @@ The application is architected following the MVVM (Model-View-ViewModel) design 
 - Theme Support: Toggle between Light and Dark modes.
 - Responsive Design: Fully adaptive layout across different device sizes.
 
-## 📱 Screenshots
+# 📱 Screenshots
 
 <table>
   <tr>
@@ -176,7 +181,7 @@ FluxIQ/
    git clone https://github.com/ahmedalibob2stone/fluxiq.git
    cd FluxIQ
    ```
-
+ 
 2. **Install dependencies**
    ```bash
    flutter pub get
