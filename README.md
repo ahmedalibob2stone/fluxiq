@@ -129,16 +129,12 @@ lib/
       <img src="screenshots/new_password_screen.jpg" width="200" alt="new_password_screen"/>
       <br/>new_password_screen
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="screenshots/home_screen.jpg" width="200" alt="Home Screen"/>
       <br/>Home Screen
     </td>
-    <td align="center">
-      <img src="screenshots/news_detail.jpg" width="200" alt="News Detail"/>
-      <br/>News Detail
-    </td>
-  </tr>
-  <tr>
    <td align="center">
       <img src="screenshots/news_detail.jpg" width="200" alt="News Detail"/>
       <br/>News Detail
