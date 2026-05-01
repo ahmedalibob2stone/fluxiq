@@ -127,7 +127,7 @@ lib/
     </td>
     <td align="center">
       <img src="screenshots/new_password_screen.jpg" width="200" alt="new_password_screen"/>
-      <br/>Login Screen
+      <br/>new_password_screen
     </td>
     <td align="center">
       <img src="screenshots/home_screen.jpg" width="200" alt="Home Screen"/>
