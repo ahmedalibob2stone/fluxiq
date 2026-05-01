@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class FluxIQTitle extends StatelessWidget {
   final double fontSize;
+  final List<Color> gradientColors; 
 
   const FluxIQTitle({
     super.key,
     this.fontSize = 32,
+    this.gradientColors = const [Color(0xFF1E88E5), Color(0xFF8E24AA)],
   });
 
   @override
@@ -13,10 +15,7 @@ class FluxIQTitle extends StatelessWidget {
     return ShaderMask(
       shaderCallback: (Rect bounds) {
         return LinearGradient(
-          colors: const [
-            Color(0xFF1E88E5),
-            Color(0xFF8E24AA),
-          ],
+          colors: gradientColors,
         ).createShader(bounds);
       },
       blendMode: BlendMode.srcIn,

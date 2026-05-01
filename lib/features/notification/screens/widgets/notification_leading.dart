@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../core/utils/notification_type_config.dart';
 import '../../model/notification_model.dart';
-
 
 class NotificationLeading extends StatelessWidget {
   final NotificationModel notification;
@@ -14,10 +13,13 @@ class NotificationLeading extends StatelessWidget {
     required this.notification,
     this.size = 54.0,
   });
+
   @override
   Widget build(BuildContext context) {
+    final config = NotificationTypeConfig.of(notification.type);
     final hasImage = notification.newsImageUrl.isNotEmpty;
     final badgeSize = size * 0.37;
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -29,10 +31,10 @@ class NotificationLeading extends StatelessWidget {
             width: size,
             height: size,
             fit: BoxFit.cover,
-            placeholder: (_, __) => _buildPlaceholder(size),
-            errorWidget: (_, __, ___) => _buildPlaceholder(size),
+            placeholder: (_, __) => _buildPlaceholder(size, config),
+            errorWidget: (_, __, ___) => _buildPlaceholder(size, config),
           )
-              : _buildPlaceholder(size),
+              : _buildPlaceholder(size, config),
         ),
         Positioned(
           bottom: -4,
@@ -41,13 +43,13 @@ class NotificationLeading extends StatelessWidget {
             width: badgeSize,
             height: badgeSize,
             decoration: BoxDecoration(
-              color: _badgeColor(),
+              color: config.badgeColor,
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 1.5),
             ),
             child: Center(
               child: Text(
-                _badgeEmoji(),
+                config.emoji,
                 style: TextStyle(fontSize: badgeSize * 0.5),
               ),
             ),
@@ -57,55 +59,20 @@ class NotificationLeading extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceholder(double size) {
+  Widget _buildPlaceholder(double size, NotificationTypeConfig config) {
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: _avatarColor(),
+        color: config.avatarColor,
         borderRadius: BorderRadius.circular(size * 0.18),
       ),
       child: Center(
         child: Text(
-          _badgeEmoji(),
+          config.emoji,
           style: TextStyle(fontSize: size * 0.44),
         ),
       ),
     );
-  }
-
-  String _badgeEmoji() {
-    switch (notification.type) {
-      case 'breaking_news':
-        return '📰';
-      case 'milestone':
-        return '🎉';
-      case 'like':
-      default:
-        return '❤️';
-    }
-  }
-
-  Color _badgeColor() {
-    switch (notification.type) {
-      case 'breaking_news':
-        return Colors.red.shade400;
-      case 'milestone':
-        return Colors.amber.shade400;
-      case 'like':
-      default:
-        return Colors.pink.shade400;
-    }
-  }
-
-  Color _avatarColor() {
-    switch (notification.type) {
-      case 'breaking_news':
-        return Colors.red.shade100;
-      case 'milestone':
-        return Colors.amber.shade100;
-      default:
-        return Colors.pink.shade100;
-    }
   }
 }

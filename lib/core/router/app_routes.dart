@@ -2,22 +2,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
-
-import '../../features/auth/ui/login_screan.dart';
-import '../../features/auth/ui/new_password_screen.dart';
-import '../../features/auth/ui/onboarding_screan.dart';
-import '../../features/auth/ui/register_screan.dart';
-import '../../features/auth/ui/reset_password_screan.dart';
-import '../../features/auth/ui/splash_screan.dart';
-import '../../features/favorites/ui/favorites_screen.dart';
-import '../../features/likes/ui/liked_news_screen.dart';
+import '../../features/auth/screens/login/login_screan.dart';
+import '../../features/auth/screens/new password/new_password_screen.dart';
+import '../../features/auth/screens/onboarding/onboarding_screan.dart';
+import '../../features/auth/screens/register/register_screan.dart';
+import '../../features/auth/screens/resent password/reset_password_screan.dart';
+import '../../features/auth/screens/splash screan/splash_screan.dart';
+import '../../features/favorites/screen/favorites_screen.dart';
+import '../../features/likes/screen/liked_news_screen.dart';
 import '../../features/news/model/news_model.dart';
 
 
-import '../../features/news/ui/home_screen.dart';
-import '../../features/news/ui/news_details_screen.dart';
-import '../../features/news/ui/create_post_screan.dart';
-import '../../features/news/ui/notification_news_screan .dart';
+
+import '../../features/news/screens/create_news/create_news_screan.dart';
+import '../../features/news/screens/home/home_screen.dart';
+import '../../features/news/screens/news_datalis/news_details_screen.dart';
+import '../../features/news/screens/notifications/notification_news_screan .dart';
 import '../../features/notification/screens/notifications_screen.dart';
 import 'app_paths.dart';
 import 'app_route_names.dart.dart';
@@ -76,10 +76,7 @@ import 'app_route_names.dart.dart';
       builder: (context, state) => const NewsHomeScreen(),
     ),
 
-    //News Details
-// في app_routes.dart — أضف هذا الـ Route مع باقي الـ Routes
 
-// ✅ الـ Route الموجود — لا تغيير عليه أبداً
     GoRoute(
       path: AppPaths.newsDetails,
       name: AppRouteNames.newsDetails,
@@ -94,7 +91,6 @@ import 'app_route_names.dart.dart';
         );
       },
     ),
-
     GoRoute(
       path: AppPaths.notificationNewsDetails,
       name: AppRouteNames.notificationNewsDetails,
@@ -111,9 +107,9 @@ import 'app_route_names.dart.dart';
     ),
     //  Create Post
     GoRoute(
-      path: AppPaths.createPost,
-      name: AppRouteNames.createPost,
-      builder: (context, state) => const CreatePostScreen(),
+      path: AppPaths.createNews,
+      name: AppRouteNames.createNews,
+      builder: (context, state) => const CreateNewsScreen(),
     ),
 
     //  Liked News

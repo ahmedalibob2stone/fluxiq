@@ -12,7 +12,7 @@ class AppRouteNames {
   //  News
   static const String home           = 'home';
   static const String newsDetails    = 'newsDetails';
-  static const String createPost     = 'createPost';
+  static const String createNews     = 'createNews';
 
   //  User
   static const String liked          = 'liked';

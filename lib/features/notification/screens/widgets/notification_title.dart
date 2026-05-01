@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/utils/notification_type_config.dart';
 import '../../model/notification_model.dart';
 import 'notification_leading.dart';
 
@@ -60,51 +61,6 @@ class NotificationTile extends StatelessWidget {
       fontWeight: FontWeight.normal,
     );
 
-    switch (notification.type) {
-      case 'like':
-        return Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(text: 'Someone liked your news: ', style: boldStyle),
-              TextSpan(text: notification.newsTitle, style: normalTitleStyle),
-            ],
-          ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        );
-
-      case 'milestone':
-        return Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(text: '🎉 Your news "', style: boldStyle),
-              TextSpan(text: notification.newsTitle, style: normalTitleStyle),
-              TextSpan(text: '" reached a milestone!', style: boldStyle),
-            ],
-          ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        );
-
-      case 'breaking_news':
-        return Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(text: '🔴 Breaking: ', style: boldStyle),
-              TextSpan(text: notification.newsTitle, style: normalTitleStyle),
-            ],
-          ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        );
-
-      default:
-        return Text(
-          notification.newsTitle,
-          style: normalTitleStyle,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        );
-    }
-  }
-}
+    final config = NotificationTypeConfig.of(notification.type); // ← بدل switch كامل
+    return config.buildTitle(notification.newsTitle, boldStyle, normalTitleStyle);
+  }}

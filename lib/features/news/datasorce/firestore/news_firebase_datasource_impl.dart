@@ -102,30 +102,45 @@
     Future<void> saveApiNews({
       required List<NewsModel> newsList,
       required String currentUserRole,
+      required String category,
     }) async {
       try {
-        // 1. اجلب الأخبار الموجودة مع حالة breakingNotificationSent
         final existingBreaking = await _db
             .collection('news')
             .where('isBreaking', isEqualTo: true)
+            .where('category', isEqualTo: category)
             .get();
 
-        // استخرج IDs الأخبار التي سبق إرسال إشعارها
         final Set<String> alreadySentIds = existingBreaking.docs
             .where((doc) => doc.data()['breakingNotificationSent'] == true)
             .map((doc) => doc.id)
             .toSet();
 
-        int currentBreakingCount = existingBreaking.docs.length;
-        const int maxBreaking = 6;
+        const int maxBreaking = 1;
+        int currentBreakingCount = 0;
 
         final batch = _db.batch();
+
+        for (final doc in existingBreaking.docs) {
+          batch.update(doc.reference, {'isBreaking': false});
+        }
+
         final sortedNews = [...newsList]
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
         for (final news in sortedNews) {
           final doc = _db.collection('news').doc(news.newsId);
-          final bool isBreaking = currentBreakingCount < maxBreaking;
+
+          final bool hasValidImage = news.imageUrl.isNotEmpty &&
+              (news.imageUrl.startsWith('http://') ||
+                  news.imageUrl.startsWith('https://'));
+          final bool hasValidData =
+              news.title.isNotEmpty && news.des.isNotEmpty;
+
+          final bool isBreaking = currentBreakingCount < maxBreaking &&
+              hasValidImage &&
+              hasValidData;
+
           if (isBreaking) currentBreakingCount++;
 
           final secureNews = news.copyWith(
@@ -133,6 +148,8 @@
             isUserPost: false,
             source: 'api',
             isBreaking: isBreaking,
+            createdAt: DateTime.now(),
+            category: category,
           );
 
           final bool alreadySent = alreadySentIds.contains(news.newsId);
@@ -181,10 +198,14 @@
         );
 
         await doc.set(
-          {...news.toJson(), 'userId': userId, 'category': category,   if (isBreaking) 'breakingNotificationSent': false,},
+          {
+            ...news.toJson(),
+            'userId': userId,
+            'category': category,
+            if (isBreaking) 'breakingNotificationSent': false,
+          },
           SetOptions(merge: true),
         );
-
       } catch (e) {
         throw ErrorHandler.handle(e);
       }

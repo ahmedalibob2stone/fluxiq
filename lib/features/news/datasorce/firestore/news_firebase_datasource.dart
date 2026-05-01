@@ -20,6 +20,8 @@ abstract class NewsFirebaseDatasource {
   Future<void> saveApiNews({
     required List<NewsModel> newsList,
     required String currentUserRole,
+    required String category, // ✅ أضفنا category كمعامل إلزامي
+
   });
 
   Future<void> publishNews({

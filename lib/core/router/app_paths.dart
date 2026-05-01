@@ -11,8 +11,8 @@ class AppPaths {
 
   //  News
   static const String home           = '/home';
-  static const String newsDetails    = '/home/details';
-  static const String createPost     = '/home/create';
+  static const String newsDetails    = '/news_detalis';
+  static const String createNews     = '/create_news';
 
   //  User
   static const String liked          = '/liked';
@@ -20,6 +20,6 @@ class AppPaths {
 
   //  Notifications
   static const String notifications = '/notifications';
-  // في app_paths.dart — أضف فقط هذا السطر
+
   static const String notificationNewsDetails = '/notification/news/:newsId';
 }

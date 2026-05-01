@@ -18,7 +18,7 @@ class NewsRepositoryImpl extends NewsRepository {
   Future<List<String>> fetchCategories({required String userRole}) async {
     if (userRole == 'admin') {
       return [
-        'My Posts',
+        'My News',
         'Technology',
         'Business',
         'Sports',
@@ -27,7 +27,7 @@ class NewsRepositoryImpl extends NewsRepository {
       ];
     } else {
       return [
-        'My Posts',
+        'My News',
         'All',
         'Technology',
         'Business',
@@ -102,6 +102,8 @@ class NewsRepositoryImpl extends NewsRepository {
   Future<void> saveApiNews({
     required List<NewsModel> newsList,
     required String currentUserRole,
+    required String category,
+
   }) async {
     if (currentUserRole != 'admin') {
       throw const PermissionException('Sync is for admins only.');
@@ -109,6 +111,8 @@ class NewsRepositoryImpl extends NewsRepository {
     await _firebase.saveApiNews(
       newsList: newsList,
       currentUserRole: currentUserRole,
+      category: category,
+
     );
   }
 
@@ -133,7 +137,7 @@ class NewsRepositoryImpl extends NewsRepository {
 
     await saveApiNews(
       newsList: apiNews,
-      currentUserRole: currentUserRole,
+      currentUserRole: currentUserRole, category: category,
     );
   }
 

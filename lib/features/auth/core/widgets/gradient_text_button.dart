@@ -5,6 +5,7 @@ class GradientTextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double fontSize;
   final EdgeInsetsGeometry padding;
+  final List<Color> gradientColors;
 
   const GradientTextButton({
     Key? key,
@@ -12,6 +13,7 @@ class GradientTextButton extends StatelessWidget {
     required this.onPressed,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+    this.gradientColors = const [Color(0xFF1E88E5), Color(0xFF8E24AA)], // ✅ Default يحافظ على السلوك الحالي
   }) : super(key: key);
 
   @override
@@ -22,11 +24,8 @@ class GradientTextButton extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [
-              Color(0xFF1E88E5), 
-              Color(0xFF8E24AA), 
-            ],
+          shaderCallback: (bounds) => LinearGradient(
+            colors: gradientColors,
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ).createShader(bounds),

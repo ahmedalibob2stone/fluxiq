@@ -8,6 +8,7 @@ class FluxIQButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final BorderSide? side;
+  final List<Color> gradientColors;
 
   const FluxIQButton({
     Key? key,
@@ -18,35 +19,37 @@ class FluxIQButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.side,
+    this.gradientColors = const [Color(0xFF1E88E5), Color(0xFF8E24AA)],
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bool isEnabled = onPressed != null && !isLoading;
-
     final bool useGradient = backgroundColor == null;
 
     return Container(
-
       width: double.infinity,
       height: 52,
       decoration: BoxDecoration(
-        color: !useGradient ? (isEnabled ? backgroundColor : Colors.grey.shade200) : null,
+        color: !useGradient
+            ? (isEnabled ? backgroundColor : Colors.grey.shade200)
+            : null,
         gradient: useGradient
             ? (isEnabled
-            ? const LinearGradient(
-          colors: [Color(0xFF1E88E5), Color(0xFF8E24AA)],
+            ? LinearGradient(
+          colors: gradientColors,
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         )
-            : LinearGradient(colors: [Colors.grey.shade400, Colors.grey.shade400]))
+            : LinearGradient(
+            colors: [Colors.grey.shade400, Colors.grey.shade400]))
             : null,
         borderRadius: BorderRadius.circular(12),
         border: side != null ? Border.fromBorderSide(side!) : null,
         boxShadow: [
           if (isEnabled && useGradient)
             BoxShadow(
-              color: const Color(0xFF1E88E5).withOpacity(0.3),
+              color: gradientColors.first.withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),

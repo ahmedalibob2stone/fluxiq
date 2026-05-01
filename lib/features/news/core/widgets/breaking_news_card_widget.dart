@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluxiq/features/news/core/widgets/safe_cached_image.dart';
-import '../../ui/news_details_screen.dart';
+import '../../screens/news_datalis/news_details_screen.dart';
 
 class BreakingNewsCard extends StatelessWidget {
   final dynamic news;

@@ -27,6 +27,8 @@ abstract class NewsRepository {
   Future<void> saveApiNews({
     required List<NewsModel> newsList,
     required String currentUserRole,
+    required String category,
+
   });
   Future<void> syncCategoryFromApi({
     required String category,
