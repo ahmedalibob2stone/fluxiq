@@ -1,34 +1,39 @@
- Overview
- FluxIQ is a comprehensive news application that combines API-sourced content with user-generated News, creating a hybrid news ecosystem.. The app provides a seamless and dynamic news experience, merging global news from external APIs with user-generated content into a single, cohesive platform.
+
+
+```markdown
+# FluxIQ
+
+## Overview
+FluxIQ is a comprehensive news application that combines API-sourced content with user-generated News, creating a hybrid news ecosystem.. The app provides a seamless and dynamic news experience, merging global news from external APIs with user-generated content into a single, cohesive platform.
 The application is architected following the MVVM (Model-View-ViewModel) design pattern and utilizes Riverpod for robust state management. This ensures a clean, maintainable, and scalable codebase. The backend is powered by Firebase (Authentication, Firestore, FCM) with integrated REST APIs for specific services.
 
-Key Features
--OnBoarding Screens
--Splash Screen
--User Authentication (Email/Password)
--OAuth Support: Fast sign-in via Google.
--Reset Password
--Welcome Emails: Automatic email triggers to welcome new users.
--Session Management: Auto-check user status to redirect to Home or Auth screens seamlessly.
+## Key Features
+- OnBoarding Screens
+- Splash Screen
+- User Authentication (Email/Password)
+- OAuth Support: Fast sign-in via Google.
+- Reset Password
+- Welcome Emails: Automatic email triggers to welcome new users.
+- Session Management: Auto-check user status to redirect to Home or Auth screens seamlessly.
 - Home Screen with Dynamic news
--Dynamic Categories
--Hybrid Content Model
--Infinite Scrolling
--Breaking News
--new Creation: 
--My News & Deletion:
--Search & Filtering:
--News Details & Interaction:
--Likes System:
--Views Tracking: 
--Favorites: 
--Sharing System:
--Notifications: (FCM): Background notifications and In-App Notifications
--Light/Dark Theme Support
--Shimmer Loading Effects
--Responsive Design
--Theme Support: Toggle between Light and Dark modes.
--Responsive Design: Fully adaptive layout across different device sizes.
+- Dynamic Categories
+- Hybrid Content Model
+- Infinite Scrolling
+- Breaking News
+- new Creation: 
+- My News & Deletion:
+- Search & Filtering:
+- News Details & Interaction:
+- Likes System:
+- Views Tracking: 
+- Favorites: 
+- Sharing System:
+- Notifications: (FCM): Background notifications and In-App Notifications
+- Light/Dark Theme Support
+- Shimmer Loading Effects
+- Responsive Design
+- Theme Support: Toggle between Light and Dark modes.
+- Responsive Design: Fully adaptive layout across different device sizes.
 
 ## 📱 Screenshots
 
@@ -59,29 +64,31 @@ Key Features
   </tr>
 </table>
 
-Planned
-Advanced analytics panel
-AI-powered news summarization
-Report news system
-Multi-language full localization
+## Planned
+- Advanced analytics panel
+- AI-powered news summarization
+- Report news system
+- Multi-language full localization
 
-Tech Stack:
-Layer	            Technology
-Framework	        Flutter 3.27.4
-Language	        Dart 3.6.2
-Architecture	    MVVM
-State Management	Riverpod
-Backend          	Firebase (Auth, Firestore, FCM)
-REST API	        Node.js + Resend
-Database	        Cloud Firestore
-Notifications	    Firebase Messaging + Local Notifications
-Networking          dio, http
-Local Storage       hive, shared_preferences
-Environment         ^6.0.0
-Image Caching       cached_network_image 3.4.1
+## Tech Stack
+| Layer | Technology |
+| :--- | :--- |
+| Framework | Flutter 3.27.4 |
+| Language | Dart 3.6.2 |
+| Architecture | MVVM |
+| State Management | Riverpod |
+| Backend | Firebase (Auth, Firestore, FCM) |
+| REST API | Node.js + Resend |
+| Database | Cloud Firestore |
+| Notifications | Firebase Messaging + Local Notifications |
+| Networking | dio, http |
+| Local Storage | hive, shared_preferences |
+| Environment | ^6.0.0 |
+| Image Caching | cached_network_image 3.4.1 |
 
-Architecture
+## Architecture
 This project follows MVVM:
+```text
 lib/
 ├── core/                       <-- Shared logic, utilities, and global configurations
 │   ├── connectivity/           <-- Network connection monitoring
@@ -128,9 +135,10 @@ lib/
 │   └── views/                  <-- 
 │
 ├── main.dart                   <-- Application entry point
+```
 
-
-Project Structure:
+## Project Structure
+```text
 FluxIQ/
 ├── android/                 # Android native code
 ├── ios/                     # iOS native code
@@ -152,42 +160,44 @@ FluxIQ/
 ├── test/                   #unit test
 ├── pubspec.yaml
 └── README.md
+```
 
-Getting Started
-Prerequisites
-Flutter SDK  3.27.4 or higher
-Dart 3.6.2 or higher
-Android Studio / VS Code
-Firebase Account (free  tier available)
+## Getting Started
 
+### Prerequisites
+- Flutter SDK 3.27.4 or higher
+- Dart 3.6.2 or higher
+- Android Studio / VS Code
+- Firebase Account (free tier available)
 
-Installation
-1-Clone the repository
+### Installation
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ahmedalibob2stone/fluxiq.git
+   cd FluxIQ
+   ```
 
-git clone https://github.com/ahmedalibob2stone/fluxiq.git
-cd FluxIQ
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
 
-2-Install dependencies
-flutter pub get
+3. **Setup Firebase**
+ - a. Create a Firebase project at [Firebase Dashboard](https://console.firebase.google.com/)
+ - b. Install FlutterFire CLI: `dart pub global activate flutterfire_cli`
+ - c. Run the configuration command in the project root: `flutterfire configure`
 
-3-Setup Firebase
+4. **Environment Variables**
+   Create a `.env` file in the root directory:
+   ```text
+   Firebase_URL=https://your-project.firebaseio.com
+   NEWS_API_KEY=*************************
+   ```
 
-a. Create a Firebase project at Firebase Dashboard
-b. Install FlutterFire CLI: dart pub global activate flutterfire_cli.
+5. **Run the app**
 
-c. Run the configuration command in the project root:flutterfire configure
-
-4-Environment Variables
-
-Create a .env file in the root directory:
-
-Firebase_URL=https://your-project.firebaseio.com
-
-NEWS_API_KEY=*************************
-
-5-Run the app
-
-Commands
+## Commands
+```bash
 # Get dependencies
 flutter pub get
 
@@ -220,11 +230,12 @@ flutter pub run flutter_launcher_icons
 
 # Generate splash screen
 flutter pub run flutter_native_splash:create
+```
 
-
-Testing
+## Testing
 The project includes comprehensive unit and tests covering all features.
 
+```text
 test/                                              # Full test suite for FluxIQ Project
 ├── core/                                          # [Core Layer Testing]
 │   ├── connectivity/
@@ -348,8 +359,10 @@ test/                                              # Full test suite for FluxIQ 
 │   ├── mock_assets.dart                           # Mocked asset files for tests
 │   └── mocks.dart                                 # Centralized Mocktail/Mockito objects
 └── main_test.dart                                 # Main test runner execution
+```
 
-Running Tests:
+### Running Tests:
+```bash
 # Run all tests
 flutter test
 
@@ -364,60 +377,58 @@ flutter test test/features/news/
 flutter test test/features/notifications/
 flutter test test/features/sharing/
 flutter test test/features/views/
+
 # Run integration tests
 flutter test test/helpers/
 
 # Generate coverage report
 flutter test --coverage
+```
 
-Test Dependencies
+### Test Dependencies
+```yaml
 dev_dependencies:
-flutter_test:
-sdk: flutter
-mocktail: ^1.0.4      # For mocking
-mockito: ^5.4.5
-fake_cloud_firestore: ^4.0.0
-flutter_riverpod: ^2.6.1
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4      # For mocking
+  mockito: ^5.4.5
+  fake_cloud_firestore: ^4.0.0
+  flutter_riverpod: ^2.6.1
+```
 
-Database Schema:
+## Database Schema
 
- Database Schema:
-Table	           Description
-users	             Stores all registered users' data in the application
-favorites	         Stores the news articles saved by each user as favorites
-likenews	         Stores the news articles liked by each user
-news	             The primary collection for all articles, including API-fetched content and user-posted news
-likes	             Stores the users who liked a specific news article
-views     	         Stores the view records for each news article including ip and city and country 
-shares	             Stores the users who shared a specific news article
-shareDetails	     Stores the details of each individual share action per user
-notifications	     Stores all in-app notifications sent to users
-breaking_news_log    Stores a log of all breaking news that triggered push notifications
-recipients	         Stores the list of users who received a specific breaking news notification
+| Table | Description |
+| :--- | :--- |
+| users | Stores all registered users' data in the application |
+| favorites | Stores the news articles saved by each user as favorites |
+| likenews | Stores the news articles liked by each user |
+| news | The primary collection for all articles, including API-fetched content and user-posted news |
+| likes | Stores the users who liked a specific news article |
+| views | Stores the view records for each news article including ip and city and country |
+| shares | Stores the users who shared a specific news article |
+| shareDetails | Stores the details of each individual share action per user |
+| notifications | Stores all in-app notifications sent to users |
+| breaking_news_log | Stores a log of all breaking news that triggered push notifications |
+| recipients | Stores the list of users who received a specific breaking news notification |
 
-Contributing:
-Fork the repository
-Create a feature branch (git checkout -b feature/amazing-feature)
-Commit your changes (git commit -m 'Add amazing feature')
-Push to the branch (git push origin feature/amazing-feature)
-Open a Pull Request
-Submit Pull Requests  ahmedalialobahi@gmail.com
+## Contributing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+6. Submit Pull Requests `ahmedalialobahi@gmail.com`
 
-License:
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-
-
- About This Project:
-
-FluxIQ  is a full-stack Flutter news application
-designed and developed entirely by **Ahmed Alobahi**.
+## About This Project
+FluxIQ is a full-stack Flutter news application designed and developed entirely by **Ahmed Alobahi**.
 
 - 📅 Started: 2025
 - 🧠 Concept, Architecture & Implementation: Ahmed Alobahi
 - 📧 Contact: [ahmedalialobahi@gmail.com]
 - 🔗 GitHub: [github.com/ahmedalibob2stone]
 - 📱 phone number: [+967 739506810]
-
-
-
+```
