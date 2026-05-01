@@ -40,34 +40,6 @@ by Firebase (Authentication, Firestore, FCM) with integrated REST APIs for speci
 - Theme Support: Toggle between Light and Dark modes.
 - Responsive Design: Fully adaptive layout across different device sizes.
 
-# 📱 Screenshots
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="screenshots/onboarding.jpg" width="200" alt="OnBoarding Screen"/>
-      <br/>OnBoarding
-    </td>
-    <td align="center">
-      <img src="screenshots/login_screen.jpg" width="200" alt="Login Screen"/>
-      <br/>Login Screen
-    </td>
-    <td align="center">
-      <img src="screenshots/home_screen.jpg" width="200" alt="Home Screen"/>
-      <br/>Home Screen
-    </td>
-    <td align="center">
-      <img src="screenshots/news_detail.jpg" width="200" alt="News Detail"/>
-      <br/>News Detail
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="screenshots/notifications.jpg" width="200" alt="Notifications"/>
-      <br/>Notifications
-    </td>
-  </tr>
-</table>
 
 ## Planned
 - Advanced analytics panel
@@ -141,6 +113,38 @@ lib/
 │
 ├── main.dart                   <-- Application entry point
 ```
+## 📱 Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/onboarding.jpg" width="200" alt="OnBoarding Screen"/>
+      <br/>OnBoarding
+    </td>
+    <td align="center">
+      <img src="screenshots/login_screen.jpg" width="200" alt="Login Screen"/>
+      <br/>Login Screen
+    </td>
+    <td align="center">
+      <img src="screenshots/new_password_screen.jpg" width="200" alt="Login Screen"/>
+      <br/>Login Screen
+    </td>
+    <td align="center">
+      <img src="screenshots/home_screen.jpg" width="200" alt="Home Screen"/>
+      <br/>Home Screen
+    </td>
+    <td align="center">
+      <img src="screenshots/news_detail.jpg" width="200" alt="News Detail"/>
+      <br/>News Detail
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/notifications.jpg" width="200" alt="Notifications"/>
+      <br/>Notifications
+    </td>
+  </tr>
+</table>
 
 ## Project Structure
 ```text
