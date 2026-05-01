@@ -139,6 +139,10 @@ lib/
     </td>
   </tr>
   <tr>
+   <td align="center">
+      <img src="screenshots/news_detail.jpg" width="200" alt="News Detail"/>
+      <br/>News Detail
+    </td>
     <td align="center">
       <img src="screenshots/notifications.jpg" width="200" alt="Notifications"/>
       <br/>Notifications
